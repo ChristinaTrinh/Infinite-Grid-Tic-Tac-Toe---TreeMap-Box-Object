@@ -133,16 +133,23 @@ public class TicTacToe
         }
 
         //if the player gets to the maximum move but still didn't win so we need to remove the first moves
-        if((totalMove!=1) && (totalMove%most==0))
+        Box toRemove = null;
+        if((totalMove!=1) && (totalMove==most))
         {
             for(Box move : board.keySet())
             {
-                if(board.get(move).equals(character+String.valueOf(totalMove+1-most)))
+                if(board.get(move).equals(character+String.valueOf(1))) //remove the first one
+                    toRemove = move;
+
+                //decrease the number for each one so it's always less than or equal to most
+                else if(board.get(move).substring(0,1).equals(character)) 
                 {
-                    board.remove(move);
-                    break;
+                    int value = Integer.parseInt(board.get(move).substring(1,2));
+                    board.put(move, character+String.valueOf(value-1));
                 }
             }
+            board.remove(toRemove);
+            totalMove--;
         }
         return totalMove;
     }
